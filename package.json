@@ -1,0 +1,41 @@
+{
+  "name": "peopledesk-pro",
+  "version": "2.0.0",
+  "description": "PeopleDesk Pro - Premium Employee Management System | B.Y.T.E AVIP 2026",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "seed": "node scripts/seed.js",
+    "seed:clean": "node scripts/seed.js --clean",
+    "test": "node --test tests/*.test.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "employee-management",
+    "hr",
+    "mongodb",
+    "express",
+    "node"
+  ],
+  "author": "B.Y.T.E AVIP 2026",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-mongo": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.3.1",
+    "express-session": "^1.18.0",
+    "helmet": "^7.1.0",
+    "mongoose": "^8.4.4",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "mongodb-memory-server": "^11.3.0",
+    "nodemon": "^3.1.4"
+  }
+}

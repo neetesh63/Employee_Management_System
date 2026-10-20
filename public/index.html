@@ -1,0 +1,803 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PeopleDesk Pro | HR Management</title>
+  <meta name="description" content="PeopleDesk Pro — Premium Employee Management System">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     LOGIN SCREEN
+═══════════════════════════════════════════════════════════ -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-bg-art"></div>
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="login-logo">
+        <span class="logo-mark">P</span>
+      </div>
+      <div>
+        <h1 class="login-title">PeopleDesk <span class="brand-pro">Pro</span></h1>
+        <p class="login-subtitle">Human Resource Management</p>
+      </div>
+    </div>
+    <div class="login-divider"></div>
+    <p class="login-eyebrow">Welcome back, Admin</p>
+    <p class="login-desc">Sign in to manage your workforce.</p>
+    <form id="loginForm" class="login-form" novalidate>
+      <div class="form-group">
+        <label for="loginEmail" class="form-label">Email address</label>
+        <div class="input-wrap">
+          <i data-lucide="mail" class="input-icon"></i>
+          <input id="loginEmail" name="email" type="email" class="form-input" placeholder="admin@peopledesk.com" autocomplete="username" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="loginPassword" class="form-label">Password</label>
+        <div class="input-wrap">
+          <i data-lucide="lock" class="input-icon"></i>
+          <input id="loginPassword" name="password" type="password" class="form-input" placeholder="Enter password" autocomplete="current-password" required>
+          <button type="button" class="toggle-pw" id="togglePw" aria-label="Toggle password visibility">
+            <i data-lucide="eye" class="pw-eye"></i>
+          </button>
+        </div>
+      </div>
+      <p id="loginError" class="form-error" role="alert"></p>
+      <button type="submit" id="loginBtn" class="btn btn-primary btn-full">
+        <span class="btn-text">Sign in</span>
+        <i data-lucide="arrow-right"></i>
+        <span class="btn-loader hidden"></span>
+      </button>
+    </form>
+    <p class="login-hint">Demo: <code>admin@peopledesk.com</code> / <code>Admin@123!</code></p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     APP SHELL
+═══════════════════════════════════════════════════════════ -->
+<div id="appShell" class="app-shell hidden">
+
+  <!-- ── Sidebar ────────────────────────────────────────── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">
+        <span class="logo-mark sm">P</span>
+        <div class="sidebar-brand-text">
+          <span class="brand-name">PeopleDesk</span>
+          <span class="brand-badge">PRO</span>
+        </div>
+      </div>
+      <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" aria-label="Collapse sidebar">
+        <i data-lucide="panel-left-close"></i>
+      </button>
+    </div>
+
+    <div class="sidebar-section-label">WORKSPACE</div>
+    <nav class="sidebar-nav">
+      <a href="#dashboard"   class="nav-item" data-page="dashboard">
+        <i data-lucide="layout-dashboard"></i><span>Dashboard</span>
+      </a>
+      <a href="#employees"   class="nav-item" data-page="employees">
+        <i data-lucide="users"></i><span>Employees</span>
+      </a>
+      <a href="#departments" class="nav-item" data-page="departments">
+        <i data-lucide="building-2"></i><span>Departments</span>
+      </a>
+      <a href="#leaves"      class="nav-item" data-page="leaves">
+        <i data-lucide="calendar-off"></i><span>Leave Requests</span>
+        <span class="nav-badge" id="leaveBadge" style="display:none">0</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-section-label admin-only">ADMIN</div>
+    <nav class="sidebar-nav admin-only">
+      <a href="#audit-logs"  class="nav-item" data-page="audit-logs">
+        <i data-lucide="clipboard-list"></i><span>Audit Logs</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-section-label">ACCOUNT</div>
+    <nav class="sidebar-nav">
+      <a href="#settings" class="nav-item" data-page="settings">
+        <i data-lucide="settings"></i><span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user" id="sidebarUser">
+        <div class="user-avatar" id="sidebarAvatar">AD</div>
+        <div class="sidebar-user-info">
+          <span class="sidebar-user-name" id="sidebarUserName">Admin</span>
+          <span class="sidebar-user-role" id="sidebarUserRole">Administrator</span>
+        </div>
+      </div>
+      <button class="sidebar-logout-btn" id="logoutBtn" title="Logout">
+        <i data-lucide="log-out"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── Main Area ──────────────────────────────────────── -->
+  <div class="main-area" id="mainArea">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-mobile-btn" id="mobileSidebarBtn" aria-label="Open sidebar">
+          <i data-lucide="menu"></i>
+        </button>
+        <nav class="breadcrumb">
+          <span class="breadcrumb-root">Workspace</span>
+          <i data-lucide="chevron-right" class="breadcrumb-sep"></i>
+          <span id="breadcrumbPage">Dashboard</span>
+        </nav>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-sm btn-ghost" id="clockBtn" title="Attendance Clock-In / Clock-Out" style="display:inline-flex;align-items:center;gap:6px;font-weight:500;padding:6px 12px;border:1px solid var(--clr-border);border-radius:var(--r-md);">
+          <i data-lucide="clock" style="width:15px;height:15px;color:var(--clr-primary);"></i>
+          <span id="clockBtnText">Clock In</span>
+        </button>
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme">
+          <i data-lucide="sun" class="theme-icon-light"></i>
+          <i data-lucide="moon" class="theme-icon-dark"></i>
+        </button>
+        <div class="topbar-user">
+          <div class="user-avatar sm" id="topbarAvatar">AD</div>
+          <div class="topbar-user-info">
+            <span id="topbarUserName">Admin</span>
+            <span id="topbarUserRole" class="topbar-role">Administrator</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="page-content">
+
+      <!-- ── DASHBOARD ──────────────────────────────────── -->
+      <section id="page-dashboard" class="page hidden">
+        <div class="page-header">
+          <div>
+            <p class="page-eyebrow">PEOPLE OVERVIEW</p>
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-desc">Real-time insights into your workforce.</p>
+          </div>
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+          <article class="stat-card" id="statTotal">
+            <div class="stat-top"><span class="stat-label">Total Employees</span><span class="stat-icon green"><i data-lucide="users"></i></span></div>
+            <strong class="stat-value" id="statTotalVal">—</strong>
+            <span class="stat-sub">All records</span>
+          </article>
+          <article class="stat-card" id="statActive">
+            <div class="stat-top"><span class="stat-label">Active</span><span class="stat-icon emerald"><i data-lucide="user-check"></i></span></div>
+            <strong class="stat-value" id="statActiveVal">—</strong>
+            <span class="stat-sub">Currently working</span>
+          </article>
+          <article class="stat-card" id="statDepts">
+            <div class="stat-top"><span class="stat-label">Departments</span><span class="stat-icon sage"><i data-lucide="building-2"></i></span></div>
+            <strong class="stat-value" id="statDeptsVal">—</strong>
+            <span class="stat-sub">Unique teams</span>
+          </article>
+          <article class="stat-card" id="statPayroll">
+            <div class="stat-top"><span class="stat-label">Monthly Payroll</span><span class="stat-icon warm"><i data-lucide="indian-rupee"></i></span></div>
+            <strong class="stat-value" id="statPayrollVal">—</strong>
+            <span class="stat-sub">Estimate (active + on leave)</span>
+          </article>
+          <article class="stat-card" id="statInactive">
+            <div class="stat-top"><span class="stat-label">Inactive</span><span class="stat-icon muted"><i data-lucide="user-x"></i></span></div>
+            <strong class="stat-value" id="statInactiveVal">—</strong>
+            <span class="stat-sub">Not currently working</span>
+          </article>
+          <article class="stat-card" id="statPendingLeaves">
+            <div class="stat-top"><span class="stat-label">Pending Leaves</span><span class="stat-icon amber"><i data-lucide="clock"></i></span></div>
+            <strong class="stat-value" id="statPendingLeavesVal">—</strong>
+            <span class="stat-sub">Awaiting review</span>
+          </article>
+          <article class="stat-card" id="statAttendance">
+            <div class="stat-top"><span class="stat-label">Today's Attendance</span><span class="stat-icon green"><i data-lucide="calendar-check"></i></span></div>
+            <strong class="stat-value" id="statAttendanceVal">—</strong>
+            <span class="stat-sub" id="statAttendanceSub">Clocked-in staff</span>
+          </article>
+        </div>
+
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h2 class="chart-title">Department Distribution</h2>
+              <p class="chart-desc">Employees per department</p>
+            </div>
+            <div class="chart-wrap doughnut-wrap">
+              <canvas id="deptChart"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h2 class="chart-title">Hiring Trends</h2>
+              <p class="chart-desc">New hires over the last 12 months</p>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="hiringChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="recent-card">
+          <div class="section-header">
+            <h2 class="section-title">Recently Added</h2>
+            <button class="btn btn-ghost btn-sm" onclick="app.navigate('employees')">View all →</button>
+          </div>
+          <div id="recentEmployees" class="recent-list"></div>
+        </div>
+      </section>
+
+      <!-- ── EMPLOYEES ───────────────────────────────────── -->
+      <section id="page-employees" class="page hidden">
+        <div class="page-header">
+          <div>
+            <p class="page-eyebrow">PEOPLE DIRECTORY</p>
+            <h1 class="page-title">Employees</h1>
+            <p class="page-desc">Search, filter, and manage your team.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-outline btn-sm" id="exportCsvBtn" title="Export to CSV">
+              <i data-lucide="download"></i> Export CSV
+            </button>
+            <button class="btn btn-primary" id="addEmployeeBtn">
+              <i data-lucide="user-plus"></i> Add Employee
+            </button>
+          </div>
+        </div>
+
+        <!-- Filters toolbar -->
+        <div class="toolbar">
+          <div class="search-box">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="search" id="empSearch" placeholder="Search by name, email, ID…" class="search-input">
+          </div>
+          <div class="filter-group">
+            <select id="filterDept" class="filter-select">
+              <option value="">All Departments</option>
+            </select>
+            <select id="filterStatus" class="filter-select">
+              <option value="">All Status</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="on_leave">On Leave</option>
+            </select>
+            <select id="filterType" class="filter-select">
+              <option value="">All Types</option>
+              <option value="full_time">Full Time</option>
+              <option value="part_time">Part Time</option>
+              <option value="contract">Contract</option>
+              <option value="intern">Intern</option>
+            </select>
+            <select id="sortBy" class="filter-select">
+              <option value="createdAt">Latest First</option>
+              <option value="name">Name A–Z</option>
+              <option value="salary">Salary</option>
+              <option value="joiningDate">Joining Date</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Bulk actions bar -->
+        <div id="bulkBar" class="bulk-bar hidden">
+          <span id="bulkCount" class="bulk-count">0 selected</span>
+          <div class="bulk-actions">
+            <button class="btn btn-sm btn-outline" id="bulkActive">Set Active</button>
+            <button class="btn btn-sm btn-outline" id="bulkInactive">Set Inactive</button>
+            <button class="btn btn-sm btn-danger-outline" id="bulkOnLeave">Set On Leave</button>
+          </div>
+          <button class="btn btn-ghost btn-sm" id="clearSelection">Clear selection</button>
+        </div>
+
+        <!-- Table -->
+        <div class="table-card">
+          <div class="table-wrap">
+            <table class="data-table" id="empTable">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" id="selectAllChk" class="chk"></th>
+                  <th>Employee</th>
+                  <th>Department</th>
+                  <th>Designation</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th>Salary</th>
+                  <th class="actions-col">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="empTableBody"></tbody>
+            </table>
+          </div>
+          <div id="empEmpty" class="empty-state hidden">
+            <i data-lucide="users" class="empty-icon"></i>
+            <h3>No employees found</h3>
+            <p>Try a different search or add a new employee.</p>
+          </div>
+          <div class="table-footer">
+            <span id="empCount" class="table-count">Showing 0 employees</span>
+            <div class="pagination" id="empPagination"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── EMPLOYEE PROFILE ────────────────────────────── -->
+      <section id="page-employee-profile" class="page hidden">
+        <div class="page-header">
+          <button class="btn btn-ghost btn-sm" id="backToEmployees">
+            <i data-lucide="arrow-left"></i> Back to Employees
+          </button>
+        </div>
+        <div id="employeeProfileContent"></div>
+      </section>
+
+      <!-- ── DEPARTMENTS ─────────────────────────────────── -->
+      <section id="page-departments" class="page hidden">
+        <div class="page-header">
+          <div>
+            <p class="page-eyebrow">ORGANISATION</p>
+            <h1 class="page-title">Departments</h1>
+            <p class="page-desc">Manage teams and reporting structures.</p>
+          </div>
+          <button class="btn btn-primary" id="addDeptBtn">
+            <i data-lucide="plus"></i> Add Department
+          </button>
+        </div>
+        <div id="deptGrid" class="dept-grid"></div>
+        <div id="deptEmpty" class="empty-state hidden">
+          <i data-lucide="building-2" class="empty-icon"></i>
+          <h3>No departments yet</h3>
+          <p>Add your first department to get started.</p>
+        </div>
+      </section>
+
+      <!-- ── LEAVES ──────────────────────────────────────── -->
+      <section id="page-leaves" class="page hidden">
+        <div class="page-header">
+          <div>
+            <p class="page-eyebrow">TIME OFF</p>
+            <h1 class="page-title">Leave Requests</h1>
+            <p class="page-desc">Review and manage leave applications.</p>
+          </div>
+          <button class="btn btn-primary" id="addLeaveBtn">
+            <i data-lucide="plus"></i> New Request
+          </button>
+        </div>
+        <div class="toolbar">
+          <div class="filter-group">
+            <select id="leaveStatusFilter" class="filter-select">
+              <option value="">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-card">
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr>
+                <th>Employee</th><th>Type</th><th>Dates</th>
+                <th>Days</th><th>Reason</th><th>Status</th><th>Actions</th>
+              </tr></thead>
+              <tbody id="leaveTableBody"></tbody>
+            </table>
+          </div>
+          <div id="leaveEmpty" class="empty-state hidden">
+            <i data-lucide="calendar-off" class="empty-icon"></i>
+            <h3>No leave requests</h3>
+            <p>All leave requests will appear here.</p>
+          </div>
+          <div class="table-footer">
+            <span id="leaveCount" class="table-count">Showing 0 requests</span>
+            <div class="pagination" id="leavePagination"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── AUDIT LOGS ──────────────────────────────────── -->
+      <section id="page-audit-logs" class="page hidden">
+        <div class="page-header">
+          <div>
+            <p class="page-eyebrow">SECURITY</p>
+            <h1 class="page-title">Audit Logs</h1>
+            <p class="page-desc">Full activity trail for all admin actions.</p>
+          </div>
+        </div>
+        <div class="toolbar">
+          <div class="filter-group">
+            <select id="logActionFilter" class="filter-select">
+              <option value="">All Actions</option>
+              <option value="create">Create</option>
+              <option value="update">Update</option>
+              <option value="delete">Delete</option>
+              <option value="login">Login</option>
+              <option value="logout">Logout</option>
+              <option value="login_failed">Login Failed</option>
+              <option value="status_change">Status Change</option>
+              <option value="export">Export</option>
+            </select>
+            <select id="logResourceFilter" class="filter-select">
+              <option value="">All Resources</option>
+              <option value="employee">Employee</option>
+              <option value="department">Department</option>
+              <option value="auth">Auth</option>
+              <option value="leave">Leave</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-card">
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr>
+                <th>Time</th><th>Actor</th><th>Role</th>
+                <th>Action</th><th>Resource</th><th>Details</th>
+              </tr></thead>
+              <tbody id="logTableBody"></tbody>
+            </table>
+          </div>
+          <div id="logEmpty" class="empty-state hidden">
+            <i data-lucide="clipboard-list" class="empty-icon"></i>
+            <h3>No audit logs yet</h3>
+            <p>Actions performed in the system will appear here.</p>
+          </div>
+          <div class="table-footer">
+            <span id="logCount" class="table-count">Showing 0 logs</span>
+            <div class="pagination" id="logPagination"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SETTINGS ────────────────────────────────────── -->
+      <section id="page-settings" class="page hidden">
+        <div class="page-header">
+          <div>
+            <p class="page-eyebrow">ACCOUNT</p>
+            <h1 class="page-title">Settings</h1>
+            <p class="page-desc">Manage your preferences and account.</p>
+          </div>
+        </div>
+        <div class="settings-grid">
+          <div class="settings-card">
+            <h2 class="settings-card-title"><i data-lucide="palette"></i> Appearance</h2>
+            <div class="settings-row">
+              <div>
+                <p class="settings-label">Theme</p>
+                <p class="settings-hint">Choose between light and dark mode</p>
+              </div>
+              <div class="theme-toggle-group">
+                <button class="theme-opt" id="themeLight" data-theme-opt="light">
+                  <i data-lucide="sun"></i> Light
+                </button>
+                <button class="theme-opt" id="themeDark" data-theme-opt="dark">
+                  <i data-lucide="moon"></i> Dark
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="settings-card">
+            <h2 class="settings-card-title"><i data-lucide="lock"></i> Change Password</h2>
+            <form id="changePasswordForm" class="settings-form">
+              <div class="form-group">
+                <label class="form-label">Current Password</label>
+                <input type="password" name="currentPassword" class="form-input" placeholder="Current password" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">New Password</label>
+                <input type="password" name="newPassword" class="form-input" placeholder="Min. 8 characters" required>
+              </div>
+              <p id="pwChangeMsg" class="form-error"></p>
+              <button type="submit" class="btn btn-primary">Update Password</button>
+            </form>
+          </div>
+          <div class="settings-card">
+            <h2 class="settings-card-title"><i data-lucide="info"></i> About</h2>
+            <p class="settings-about">
+              <strong>PeopleDesk Pro v2.0</strong><br>
+              Premium Employee Management System<br>
+              Built for B.Y.T.E AVIP 2026 Full Stack Development Task.<br><br>
+              <strong>Stack:</strong> HTML · CSS · Vanilla JS · Node.js · Express · MongoDB
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div><!-- /main-area -->
+</div><!-- /appShell -->
+
+<!-- ═══════════════════════════════════════════════════════════
+     MODALS
+═══════════════════════════════════════════════════════════ -->
+
+<!-- Employee Modal -->
+<dialog id="employeeModal" class="modal">
+  <div class="modal-inner">
+    <div class="modal-header">
+      <div>
+        <p class="modal-eyebrow">EMPLOYEE DETAILS</p>
+        <h2 id="empModalTitle" class="modal-title">Add Employee</h2>
+      </div>
+      <button class="modal-close" id="empModalClose" aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+    <form id="employeeForm" class="modal-body" novalidate>
+      <input type="hidden" name="id">
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label">Full Name <span class="req">*</span></label>
+          <input name="name" class="form-input" placeholder="e.g. Aarav Sharma" maxlength="100" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address <span class="req">*</span></label>
+          <input name="email" type="email" class="form-input" placeholder="name@company.com" maxlength="150" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input name="phone" type="tel" class="form-input" placeholder="9876543210" maxlength="20">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Department <span class="req">*</span></label>
+          <select name="department" class="form-select" required>
+            <option value="">Select department…</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Job Designation <span class="req">*</span></label>
+          <input name="designation" class="form-input" placeholder="e.g. Software Engineer" maxlength="100" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Joining Date <span class="req">*</span></label>
+          <input name="joiningDate" type="date" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Employment Type</label>
+          <select name="employmentType" class="form-select">
+            <option value="full_time">Full Time</option>
+            <option value="part_time">Part Time</option>
+            <option value="contract">Contract</option>
+            <option value="intern">Intern</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select name="status" class="form-select">
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+            <option value="on_leave">On Leave</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Monthly Salary (₹) <span class="req">*</span></label>
+          <input name="salary" type="number" class="form-input" placeholder="55000" min="0" max="100000000" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Reporting Manager</label>
+          <select name="reportingManager" class="form-select">
+            <option value="">None</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Performance Rating</label>
+          <select name="performanceRating" class="form-select">
+            <option value="5">★★★★★ Exceptional (5/5)</option>
+            <option value="4" selected>★★★★☆ Exceeds (4/5)</option>
+            <option value="3">★★★☆☆ Meets (3/5)</option>
+            <option value="2">★★☆☆☆ Needs Improvement (2/5)</option>
+            <option value="1">★☆☆☆☆ Unsatisfactory (1/5)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Blood Group</label>
+          <select name="bloodGroup" class="form-select">
+            <option value="">Select blood group…</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Emergency Contact Name</label>
+          <input name="emergencyContactName" class="form-input" placeholder="e.g. Suman Sharma">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Emergency Contact Phone</label>
+          <input name="emergencyContactPhone" class="form-input" placeholder="9876543299">
+        </div>
+        <div class="form-group span-2">
+          <label class="form-label">Skills (comma-separated)</label>
+          <input name="skills" class="form-input" placeholder="JavaScript, Node.js, MongoDB">
+        </div>
+        <div class="form-group span-2">
+          <label class="form-label">Address</label>
+          <textarea name="address" class="form-textarea" placeholder="City, State" rows="2" maxlength="500"></textarea>
+        </div>
+        <div class="form-group span-2">
+          <label class="form-label">Profile Photo URL</label>
+          <input name="profilePhoto" type="url" class="form-input" placeholder="https://example.com/photo.jpg">
+        </div>
+      </div>
+      <p id="empFormError" class="form-error" role="alert"></p>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" id="empModalCancel">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="empSaveBtn">Save Employee</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<!-- Department Modal -->
+<dialog id="departmentModal" class="modal">
+  <div class="modal-inner">
+    <div class="modal-header">
+      <div>
+        <p class="modal-eyebrow">DEPARTMENT</p>
+        <h2 id="deptModalTitle" class="modal-title">Add Department</h2>
+      </div>
+      <button class="modal-close" id="deptModalClose" aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+    <form id="departmentForm" class="modal-body" novalidate>
+      <input type="hidden" name="id">
+      <div class="form-group">
+        <label class="form-label">Department Name <span class="req">*</span></label>
+        <input name="name" class="form-input" placeholder="e.g. Engineering" maxlength="100" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea name="description" class="form-textarea" placeholder="Brief description…" rows="3" maxlength="500"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Department Head</label>
+        <select name="headEmployee" class="form-select">
+          <option value="">None</option>
+        </select>
+      </div>
+      <p id="deptFormError" class="form-error" role="alert"></p>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" id="deptModalCancel">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="deptSaveBtn">Save Department</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<!-- Leave Modal -->
+<dialog id="leaveModal" class="modal">
+  <div class="modal-inner">
+    <div class="modal-header">
+      <div>
+        <p class="modal-eyebrow">LEAVE REQUEST</p>
+        <h2 class="modal-title">New Leave Request</h2>
+      </div>
+      <button class="modal-close" id="leaveModalClose" aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+    <form id="leaveForm" class="modal-body" novalidate>
+      <div class="form-group" id="leaveEmpGroup">
+        <label class="form-label">Employee <span class="req">*</span></label>
+        <select name="employee" id="leaveEmpSelect" class="form-select">
+          <option value="">Select employee…</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Leave Type <span class="req">*</span></label>
+        <select name="type" class="form-select" required>
+          <option value="">Select type…</option>
+          <option value="annual">Annual Leave</option>
+          <option value="sick">Sick Leave</option>
+          <option value="casual">Casual Leave</option>
+          <option value="unpaid">Unpaid Leave</option>
+          <option value="maternity">Maternity Leave</option>
+          <option value="paternity">Paternity Leave</option>
+        </select>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label">Start Date <span class="req">*</span></label>
+          <input name="startDate" type="date" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">End Date <span class="req">*</span></label>
+          <input name="endDate" type="date" class="form-input" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Reason <span class="req">*</span></label>
+        <textarea name="reason" class="form-textarea" placeholder="Brief reason for leave…" rows="3" maxlength="1000" required></textarea>
+      </div>
+      <p id="leaveFormError" class="form-error" role="alert"></p>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" id="leaveModalCancel">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit Request</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<!-- Confirm Dialog -->
+<dialog id="confirmModal" class="modal confirm-modal">
+  <div class="modal-inner confirm-inner">
+    <div class="confirm-icon-wrap" id="confirmIcon">
+      <i data-lucide="alert-triangle"></i>
+    </div>
+    <h2 id="confirmTitle" class="confirm-title">Are you sure?</h2>
+    <p id="confirmMessage" class="confirm-message">This action cannot be undone.</p>
+    <div class="modal-footer confirm-footer">
+      <button class="btn btn-ghost" id="confirmCancel">Cancel</button>
+      <button class="btn btn-danger" id="confirmOk">Delete</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Salary Slip Modal -->
+<dialog id="payslipModal" class="modal payslip-modal">
+  <div class="modal-inner payslip-modal-inner">
+    <div class="modal-header no-print">
+      <div>
+        <p class="modal-eyebrow">PAYROLL &amp; COMPENSATION</p>
+        <h2 class="modal-title">Employee Salary Slip</h2>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="btn btn-primary btn-sm" onclick="window.print()"><i data-lucide="printer"></i> Print Slip</button>
+        <button class="modal-close" id="payslipModalClose" aria-label="Close"><i data-lucide="x"></i></button>
+      </div>
+    </div>
+    <div class="modal-body payslip-body" id="payslipContent"></div>
+  </div>
+</dialog>
+
+<!-- Digital ID Card Modal -->
+<dialog id="idCardModal" class="modal id-card-modal">
+  <div class="modal-inner id-card-modal-inner">
+    <div class="modal-header no-print">
+      <div>
+        <p class="modal-eyebrow">DIGITAL IDENTITY</p>
+        <h2 class="modal-title">Employee ID Badge</h2>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="btn btn-primary btn-sm" onclick="window.print()"><i data-lucide="printer"></i> Print Badge</button>
+        <button class="modal-close" id="idCardModalClose" aria-label="Close"><i data-lucide="x"></i></button>
+      </div>
+    </div>
+    <div class="modal-body id-card-body" id="idCardContent"></div>
+  </div>
+</dialog>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TOAST NOTIFICATIONS
+═══════════════════════════════════════════════════════════ -->
+<div id="toastContainer" class="toast-container" role="region" aria-label="Notifications" aria-live="polite"></div>
+
+<!-- Mobile sidebar overlay -->
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════════════════════ -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="/js/theme.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/attendance.js"></script>
+<script src="/js/dashboard.js"></script>
+<script src="/js/employees.js"></script>
+<script src="/js/departments.js"></script>
+<script src="/js/leaves.js"></script>
+<script src="/js/auditLogs.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>
