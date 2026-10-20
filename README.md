@@ -8,6 +8,20 @@
 
 ---
 
+## ⚡ Quick Demo Login Credentials
+
+Anyone reviewing or testing the project can log in using these pre-seeded demo accounts:
+
+| Role | Email | Password | Access Level |
+| :--- | :--- | :--- | :--- |
+| 👑 **Administrator** | `admin@peopledesk.com` | `Admin@123!` | Full admin access: employee CRUD, salary slips, audit logs, analytics |
+| 👔 **HR Manager** | `meera.singh@example.com` | `HRManager@123!` | Management access: employee CRUD, departments, attendance, payroll |
+| 👤 **Employee** | `aarav.sharma@example.com` | `Employee@123!` | Self-service: daily clock-in/out, view own profile & salary slip |
+
+> 💡 *The database automatically seeds these accounts and 14 realistic employee profiles on first run with zero configuration required!*
+
+---
+
 ## 🌟 Key Features
 
 - **Employee Lifecycle Management (CRUD)**:
